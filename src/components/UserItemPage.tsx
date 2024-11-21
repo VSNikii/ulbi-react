@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { Params } from "react-router-dom";
+import { Params, useNavigate } from "react-router-dom";
 import { IUser } from "../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 interface UserItemPageParams {
     id: string
@@ -13,12 +12,16 @@ interface UserItemPageParams {
 export const UserItemPage: FC = () => {
     const [userInfo, setUserInfo] = useState<IUser | null>(null);
     const params = useParams<UserItemPageParams>();
-    const history = useHistory();
-    console.log(params);
+    const navigate = useNavigate();
     
     useEffect(() => {
         fetchUsersItem();
     }, [])
+
+
+    const backToHome = () => {
+        navigate('/users');
+    } 
 
     async function fetchUsersItem(){
         try{
@@ -31,7 +34,7 @@ export const UserItemPage: FC = () => {
 
     return (
         <>
-        <button>Назад</button>
+        <button onClick={backToHome}>Назад</button>
             <div>
                  {userInfo?.email} {userInfo?.id} {userInfo?.name}
             </div>
